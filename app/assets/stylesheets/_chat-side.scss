@@ -1,5 +1,5 @@
 a{
-  color:white;
+  color: $white-color;
   text-decoration: none;
 }
 .side-bar {
@@ -18,7 +18,7 @@ a{
       margin:0 20px;
       display: flex;
       justify-content: space-between;
-      color: white;
+      color: $white-color;
       &__icons {
         width: 60px;
         display: flex;
@@ -38,7 +38,7 @@ a{
     box-sizing: border-box;
     .group {
       display: block;
-      color: white;
+      color: $white-color;
       text-decoration: none;
       margin-bottom: 40px;
       &__group-name {
