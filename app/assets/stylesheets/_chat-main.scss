@@ -1,5 +1,5 @@
 .chat-main{
-  background-color: #ffffff;
+  background-color: $white-color;
   width:calc(100vw - 300px);
   height: 100vh;
   &__group-info {
@@ -102,7 +102,6 @@
         cursor: pointer;
         border-style: none;
       }
-
     }
   }
 }
