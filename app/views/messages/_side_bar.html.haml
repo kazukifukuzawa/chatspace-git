@@ -5,18 +5,14 @@
         = current_user.name
       %ul.top-item__icons
         %li.top-item__icons__position
-          = link_to "#", class: "top-item__icons--position-edit" do
+          = link_to new_group_path(current_user), class: "top-item__icons--position-edit" do
             = icon('far','edit' , class: "icon")
           = link_to edit_user_path(current_user), class: "top-item__icons--position-cog" do
             = icon('fas','cog' , class: "icon")
   .side-bar__group-list
-    = link_to "#", class:"group" do
-      .group__group-name
-        tech-camp
-      .group__latest-message
-        まだメッセージがありません
-    = link_to "#", class:"group" do
-      .group__group-name
-        tech-camp
-      .group__latest-message
-        まだメッセージがありません
+    - current_user.groups.each do |group|
+      = link_to "#", class:"group" do
+        .group__group-name
+          = group.name
+        .group__latest-message
+          まだメッセージがありません    
