@@ -1,40 +1,32 @@
-
 .chat-main
   .chat-main__group-info
     .chat-main__group-info__main
-      %h2.chat-main__group-info__main--name test
+      %h2.chat-main__group-info__main--name
+        = @group.name
       %ul.chat-main__group-info__main--number 
         ="Member : "
         %li.group-info-main__number--name
-          ="masa"
+          =@group.users
 
     .chat-main__group-info__botan
-      = link_to "#", class: "button" do
+      = link_to edit_group_path(@group), class: "button" do
         ="edit"
 
   .chat-main__message-list
-    .chat-main__message-list--box
-      .chat-main__message-list--box__info
-        .chat-main__message-list--box__info--talker masa
-        .chat-main__message-list--box__info--date 2019/11/20(wed) 17:43:01
-      .chat-main__message-list--box__text
-        .chat-main__message-list--box__text--meen おはよう！！
-
-        .chat-main__message-list--box
-      .chat-main__message-list--box__info
-        .chat-main__message-list--box__info--talker masa
-        .chat-main__message-list--box__info--date 2019/11/20(wed) 17:43:01
-      .chat-main__message-list--box__text
-        .chat-main__message-list--box__text--meen おはよう！！
-
+    = render @messages
+   
+  
   .chat-main__message-form
     .main-header
     .messages
+    
     .form
-      %form.new_message
+      =form_with model: [@group, @message], html: {class: "new_message"}, local: true do |f|
         .input-box
-          %input{type: "text",class: "input-box__text", placeholder: "type a message"}
-          %label.input-box__image
-            = icon('fas','image')
-            %input{type: "file", class: "input-box__image__file"}
-        %input{type: "submit", value: "Send", class: "submit-btn"}
+          = f.text_field :content, class: 'input-box__text', placeholder: 'type a message'
+          = f.label :image, class: 'input-box__image' do
+            = icon('far', 'image', class: 'Form__icon')
+            = f.file_field :image, class: 'input-box__image__file'
+        = f.submit 'Send', class: 'submit-btn'
+
+
