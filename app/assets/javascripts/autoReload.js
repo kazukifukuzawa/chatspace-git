@@ -2,7 +2,7 @@ $(function(){
   function buildHTML(message){
     if ( message.image ) {
       let html =
-        `<div class="chat-main__message-list--box">
+        `<div class="chat-main__message-list--box data-message-id=${message.id}>
           <div class="chat-main__message-list--box__info">
             <div class="chat-main__message-list--box__info--talker">
               ${message.user_name}
@@ -21,7 +21,7 @@ $(function(){
       return html;
     } else {
       let html =
-      `<div class="chat-main__message-list--box">
+      `<div class="chat-main__message-list--box" date-message-id=${message.id}>
         <div class="chat-main__message-list--box__info">
           <div class="chat-main__message-list--box__info--talker ">
             ${message.user_name}
@@ -40,28 +40,33 @@ $(function(){
     };
   }
 
-  $('.new_message').on('submit', function(e){
-    e.preventDefault();
-    let formData = new FormData(this);
-    let url = $(this).attr('action');
+  let reloadMessages = function() {
+    //カスタムデータ属性を利用し、ブラウザに表示されている最新メッセージのidを取得
+    let last_message_id = $('.MessageBox:last').data("message-id");
     $.ajax({
-      url: url,
-      type: "POST",
-      data: formData,
+      url: "api/messages",
+      type: 'get',
       dataType: 'json',
-      processData: false,
-      contentType: false
-      
+      data: {id: last_message_id}
     })
-    .done(function(data){
-      let html = buildHTML(data);
-      $('.chat-main__message-list').append(html);
-      $('.chat-main__message-list').animate({ scrollTop: $('.chat-main__message-list')[0].scrollHeight})     
-      $('form')[0].reset();
+    .done(function(messages){
+      // 更新するメッセージがなかった場合は.doneの後の処理が動かないようにする
+      if (messages.length !== 0) {
+        //追加するHTMLの入れ物を作る
+        let insertHTML = '';
+        //配列messagesの中身一つ一つを取り出し、HTMLに変換したものを入れ物に足し合わせる
+        $.each(messages, function(i, message) {
+          insertHTML += buildHTML(message)
+        });
+        //メッセージが入ったHTMLに、入れ物ごと追加
+        $('.chat-main__message-list').append(insertHTML);
+        
+        $('.chat-main__message-list').animate({ scrollTop: $('.chat-main__message-list')[0].scrollHeight});
+       } 
     })
     .fail(function(){
       alert('error');
     });
-    return false;
-  });
+  };
+  setInterval(reloadMessages,7000);
 });
